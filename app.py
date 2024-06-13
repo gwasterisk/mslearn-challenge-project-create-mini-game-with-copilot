@@ -1,38 +1,43 @@
 import random
 
-# define a constants for rock, paper, and scissors
+# define constants for rock, paper, and scissors
 ROCK = "rock"
 PAPER = "paper"
 SCISSORS = "scissors"
+
+# define constants for the result
+TIE = 0
+WIN = 1
+LOSS = -1
 
 # Compute the computer choice
 def computer_choice():
     return random.choice([ROCK, PAPER, SCISSORS])
 
 # Given two choices, determine the winner by returning an integer
-# 0 if it's a tie
-# 1 if the first choice wins
-# -1 if the second choice wins
+# TIE if it's a tie
+# WIN if the first choice wins
+# LOSS if the second choice wins
 def determine_winner(choice1, choice2):
     if choice1 == choice2:
-        return 0
+        return TIE
     if choice1 == ROCK:
-        return 1 if choice2 == SCISSORS else -1
+        return WIN if choice2 == SCISSORS else LOSS
     if choice1 == PAPER:
-        return 1 if choice2 == ROCK else -1
+        return WIN if choice2 == ROCK else LOSS
     if choice1 == SCISSORS:
-        return 1 if choice2 == PAPER else -1
+        return WIN if choice2 == PAPER else LOSS
     
 # Given an integer, return the message
-# if 0, return "It's a tie!"
-# if 1, return "You win!"
-# if -1, return "You lose!"
+# if TIE, return "It's a tie!"
+# if WIN, return "You win!"
+# if LOSS, return "You lose!"
 def get_message(result):
-    if result == 0:
+    if result == TIE:
         return "It's a tie!"
-    if result == 1:
+    if result == WIN:
         return "You win!"
-    if result == -1:
+    if result == LOSS:
         return "You lose!"
     
 # Given a choice, convert it to lower case then check if it is valid
@@ -66,17 +71,27 @@ def main():
         print(f"Computer choice: {comp_choice}")
         result = determine_winner(user_choice, comp_choice)
         print(get_message(result))
-        if result == 1:
+        if result == WIN:
             wins += 1
-        elif result == -1:
+        elif result == LOSS:
             losses += 1
-        else:
+        elif result == TIE:
             ties += 1
+        else:
+            print("Invalid choice. Please try again.")
+            continue
+
         print(f"Wins: {wins}, Losses: {losses}, Ties: {ties}")
-        play_again = input("Do you want to play again? (yes/no): ")
-        if play_again.lower() != "yes":
-            break
-    print(f"Final Wins: {wins}, Losses: {losses}, Ties: {ties}")
+        while True:
+            play_again = input("Do you want to play again? (yes/no): ")
+            if play_again.lower() == "no":
+                print(f"Final Wins: {wins}, Losses: {losses}, Ties: {ties}")
+                return
+            elif play_again.lower() == "yes":
+                break
+            else:
+                print("Invalid choice. Please try again.")
+                continue
 
 main()
 
